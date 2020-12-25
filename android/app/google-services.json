@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "791983175586",
+    "project_id": "fit-nsocial",
+    "storage_bucket": "fit-nsocial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791983175586:android:b2573c1a960c91544be4fb",
+        "android_client_info": {
+          "package_name": "com.syfn.flutter_app_fitnsocial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791983175586-58upv5s65pdl0usct3na3v4gfqgq8v51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.syfn.flutter_app_fitnsocial",
+            "certificate_hash": "728248571e1730af7c933f89576e96736c0cd3bb"
+          }
+        },
+        {
+          "client_id": "791983175586-l4bekkf0dmkor8giav3ocihmsflbmga2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcuNA8Xuz1M_KUx6OBRcCX7QbYvreYj-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791983175586-l4bekkf0dmkor8giav3ocihmsflbmga2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
