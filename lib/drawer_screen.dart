@@ -9,6 +9,7 @@ import 'package:flutter_app_fitnsocial/profile_screen.dart';
 import 'package:flutter_app_fitnsocial/t&c_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:share/share.dart';
 import 'dart:core';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,7 +35,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
-        color: Color(0xFFD2D4C8),
+        color: Color(0x89BCB8B1),
         padding: EdgeInsets.fromLTRB(0, 70, 15, 0),
         child: Container(
           child: Column(
@@ -80,19 +81,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         child: Row(
                           children: [
                             InkWell(
-                              onTap: (){
-                                if(element['title']=='Contact Us'){
+                              onTap: () async {
+                                if(element['title']=='Help'){
                                   final Uri _emailLaunchUri = Uri(
                                     scheme: 'mailto',
-                                    path: 'syfn.games@gmail.com',
+                                    path: 'fitnsocialapp@gmail.com',
                                   );
                                   _launchURL(_emailLaunchUri.toString());
                                 }
                                 if(element['title']=='Profile'){
                                   Navigator.push(context,MaterialPageRoute(builder: (_) => ProfileScreen()));
                                 }
-                                if(element['title']=='Rate Us'){
-
+                                if(element['title']=='Share App'){
+                                  final RenderBox box = context.findRenderObject();
+                                  Share.share("Download Fit'n Social, a healthy living app on Android and IOS",
+                                      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
                                 }
                                 if(element['title']=='T&C'){
                                   Navigator.push(

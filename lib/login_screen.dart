@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_fitnsocial/profile_screen.dart';
 import 'package:flutter_app_fitnsocial/register_screen.dart';
 import 'package:flutter_app_fitnsocial/utilities/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
     auth.signInWithEmailAndPassword(email: em, password: pw).then((authResult) {
       if (authResult.user.emailVerified) {
         Navigator.pushAndRemoveUntil(
-            context, MaterialPageRoute(builder: (_) => LoggedInScreen()), (
+            context, MaterialPageRoute(builder: (_) => ProfileScreen()), (
             Route<dynamic> rr) => false);
         print("email verified");
       }

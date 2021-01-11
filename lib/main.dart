@@ -1,5 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
+import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/rendering.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,45 +34,68 @@ import 'package:flutter_app_fitnsocial/inbox_screen.dart' as inbox;
 
 import 'onBoarding_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  // RenderErrorBox.backgroundColor = Colors.transparent;
+  // RenderErrorBox.textStyle = ui.TextStyle(color: Colors.transparent);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String i = prefs.getString('color');
+  runApp(MyApp(i));
+
+}
 
 class MyApp extends StatelessWidget {
+  String i = "#001100";
+  MyApp(this.i);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Container(
-            color: Colors.white,
+     return FutureBuilder(
+            future: Firebase.initializeApp(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Container(
+                );
+              }
+              // Once complete, show your application
+              if (snapshot.connectionState == ConnectionState.done) {
+                initializeDateFormatting('pt_BR', null);
+                return MaterialApp(
+                  title: 'Fitn',
+                  debugShowCheckedModeBanner: false,
+                  home: LoggedInScreen(),
+                  theme: ThemeData(
+                    primaryColor: i!=null? HexColor(i) : HexColor("#000000"),
+                    accentColor: Color(0xFFF3F5F7),
+                  ),
+                );
+              }
+              return Container();
+              // Otherwise, show something whilst waiting for initialization to complete
+              //return Loading();
+            },
           );
-        }
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          initializeDateFormatting('pt_BR', null);
-          return MaterialApp(
-            title: 'Fitn',
-            debugShowCheckedModeBanner: false,
-            home: LoggedInScreen(),
-            theme: ThemeData(
-              primaryColor: Colors.blueAccent,
-              accentColor: Color(0xFFF3F5F7),
-            ),
-          );
-        }
-        return Container();
-        // Otherwise, show something whilst waiting for initialization to complete
-        //return Loading();
-      },
-    );
   }
+
+}
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
 class LoggedInScreen extends StatefulWidget {
+
   @override
   _LoggedInScreenState createState() => _LoggedInScreenState();
 }
@@ -95,29 +122,9 @@ class _LoggedInScreenState extends State<LoggedInScreen>
   String _homeScreenText = "waiting for token...";
   String _messageText = "Waiting for Message...";
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  StreamController<List<Member>> _streamController;
-
-  List<Member> users;
-
   @override
   void initState() {
-    _streamController = StreamController<List<Member>>();
-    users = [
-      new Member(
-          "https://picsum.photos/250?image=9", "Raj P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-      new Member(
-          "https://picsum.photos/250?image=10", "Tej P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-      new Member(
-          "https://picsum.photos/250?image=11", "Ram P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-      new Member(
-          "https://picsum.photos/250?image=12", "Sai P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-      new Member(
-          "https://picsum.photos/250?image=13", "Jai P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-      new Member(
-          "https://picsum.photos/250?image=14", "Rai P.", "Junior", "5'11", 140, ["Comp Sci","Business"], ["goal1","goal2","goal1","goal2","goal1","goal2"], ["Activity1","Activity2"]),
-    ];
-
-    /*
+    super.initState();
     FirebaseAuth.instance.authStateChanges().listen((event) async {
       googleSignIn.disconnect();
       if (event == null) {
@@ -126,10 +133,7 @@ class _LoggedInScreenState extends State<LoggedInScreen>
             Route<dynamic> rr) => false);
       }
     });
-
-     */
     //popup();
-
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         setState(() {
@@ -170,10 +174,6 @@ class _LoggedInScreenState extends State<LoggedInScreen>
     });
   }
 
-  void signOutGoogle() async {
-    await googleSignIn.disconnect();
-    print("User Sign Out");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +238,7 @@ class _LoggedInScreenState extends State<LoggedInScreen>
                       },
                     ),
               centerTitle: true,
-              title: Image.asset("lib/images/site.png",height: 90,width: 90,),
+             // title: Image.asset("lib/images/site.png",height: 90,width: 90,),
               elevation: 0.0,
               actions: <Widget>[
                 IconButton(
@@ -277,7 +277,7 @@ class _LoggedInScreenState extends State<LoggedInScreen>
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.calendar_today,
+                    Icons.event,
                     size: 30,
                   ),
                   title: SizedBox.shrink(),

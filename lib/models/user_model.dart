@@ -12,4 +12,9 @@ class InboxUser {
     this.imageUrl,
     this.lastMessage,
   });
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "id: " + id + " - name: " + name;
+  }
 }

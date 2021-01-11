@@ -55,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
     run();
   }
 
-  _buildMessage(Message message, bool isMe) {
+  _buildMessage(Message message, bool isMe, bool isAdmin) {
     final Container msg = Container(
       margin: isMe
           ? EdgeInsets.only(
@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
-        color: isMe ? Color(0xFFc7d8e8) : Color(0xFF9ba9d0),
+        color: isMe ? Theme.of(context).primaryColor.withOpacity(.2) : Theme.of(context).primaryColor.withOpacity(.5),
         borderRadius: isMe
             ? BorderRadius.only(
           topLeft: Radius.circular(15.0),
@@ -156,6 +156,32 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
+    if(isAdmin){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(8,5,8,6),
+                decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                child: Text("It's A Match!",
+                  style: GoogleFonts.alata(
+                    color: Colors.black54,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10,),
+            ],
+          ),
+        ],
+      );
+    }
     if (isMe) {
       return msg;
     }
@@ -352,13 +378,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final Message message = messages[index];
                       final bool isMe = message.sender == FirebaseAuth.instance.currentUser.uid;
-                      return _buildMessage(message, isMe);
+                      final bool isAdmin = message.sender == "ADMIN";
+                      return _buildMessage(message, isMe, isAdmin);
                     },
                   ),
                 ),
               ),
             ),
-            widget.userId!="3yw9EZK2cbO2EG1aSszIa5fYpgE3"?_buildMessageComposer():Container(),
+            _buildMessageComposer(),
           ],
         ),
       ),

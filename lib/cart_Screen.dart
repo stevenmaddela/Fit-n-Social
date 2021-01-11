@@ -84,6 +84,7 @@ class _CartScreenState extends State<CartScreen> with SingleTickerProviderStateM
           ),
         ),
         title: TabBar(
+          labelPadding: EdgeInsets.all(0),
           controller: _tabController,
           indicatorColor: Colors.black54,
           unselectedLabelColor: Colors.black54,
@@ -94,27 +95,21 @@ class _CartScreenState extends State<CartScreen> with SingleTickerProviderStateM
               child: Text("All",
                 style: GoogleFonts.montserrat(
                     color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize:
-                    MediaQuery.of(context).size.width / 30),
+                    fontWeight: FontWeight.w500,),
               ),
             ),
             Tab(
               child: Text("Meal Plans",
                 style: GoogleFonts.montserrat(
                     color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize:
-                    MediaQuery.of(context).size.width / 32),
+                    fontWeight: FontWeight.w500,),
               ),
             ),
             Tab(
               child: Text("Workouts",
                 style: GoogleFonts.montserrat(
                     color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                    fontSize:
-                    MediaQuery.of(context).size.width / 32),
+                    fontWeight: FontWeight.w500,),
               ),
             ),
           ],
@@ -188,100 +183,108 @@ class _CartScreenState extends State<CartScreen> with SingleTickerProviderStateM
                           promotions[index].mainImage, height: 100, width: 135, fit: BoxFit.fill,)
                     ),
                     SizedBox(width: 15,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min, // set it to min
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              backgroundImage: AssetImage(promotions[index].userImage),
-                              radius: 13,
-                            ),
-                            SizedBox(width: 10,),
-                            Text(promotions[index].username,
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize:
-                                  MediaQuery.of(context).size.width / 50),
-                            ),
-                            SizedBox(width: 15,),
-                            Text(promotions[index].userCollege,
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize:
-                                  MediaQuery.of(context).size.width / 50),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Container(
-                          child: Text(promotions[index].description,
-                            style: GoogleFonts.montserrat(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w500,
-                                fontSize:
-                                MediaQuery.of(context).size.width / 50),
-                            maxLines: 4,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          width: MediaQuery.of(context).size.width/1.8,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Column(
+                            Row(
                               children: [
-                                SizedBox(height: 15,),
-                                RatingBarIndicator(
-                                  rating: 2.75,
-                                  itemBuilder: (context, index) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  itemCount: 5,
-                                  itemSize: 17.0,
-                                  unratedColor: Colors.black12,
-                                  direction: Axis.horizontal,
+                                CircleAvatar(
+                                  backgroundImage: AssetImage(promotions[index].userImage),
+                                  radius: 13,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(promotions[index].stars.toString()+" /5",
-                                      style: GoogleFonts.montserrat(
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize:
-                                          MediaQuery.of(context).size.width / 50),
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Text(promotions[index].reviews.toString() + " reviews",
-                                      style: GoogleFonts.montserrat(
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize:
-                                          MediaQuery.of(context).size.width / 50),
-                                    ),
-                                  ],
+                                SizedBox(width: 10,),
+                                Text(promotions[index].username,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize:
+                                      MediaQuery.of(context).size.width / 50),
+                                ),
+                                SizedBox(width: 15,),
+                                Text(promotions[index].userCollege,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize:
+                                      MediaQuery.of(context).size.width / 50),
                                 ),
                               ],
                             ),
-                            SizedBox(width: MediaQuery.of(context).size.width/6.5,),
+                            SizedBox(height: 5,),
                             Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                                  color: Colors.pink),
-                              child: Text('\$'+promotions[index].price.toString(),
+                              child: Text(promotions[index].description,
                                 style: GoogleFonts.montserrat(
-                                    color: Colors.white,
+                                    color: Colors.black87,
                                     fontWeight: FontWeight.w500,
                                     fontSize:
-                                    MediaQuery.of(context).size.width / 30),
+                                    MediaQuery.of(context).size.width / 50),
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              width: MediaQuery.of(context).size.width/1.8,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    SizedBox(height: 15,),
+                                    RatingBarIndicator(
+                                      rating: 2.75,
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      itemCount: 5,
+                                      itemSize: 17.0,
+                                      unratedColor: Colors.black12,
+                                      direction: Axis.horizontal,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(promotions[index].stars.toString()+" /5",
+                                          style: GoogleFonts.montserrat(
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize:
+                                              MediaQuery.of(context).size.width / 50),
+                                        ),
+                                        SizedBox(width: 15,),
+                                        Text(promotions[index].reviews.toString() + " reviews",
+                                          style: GoogleFonts.montserrat(
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize:
+                                              MediaQuery.of(context).size.width / 50),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 1,),
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                                      color: Colors.pink),
+                                  child: Text('\$'+promotions[index].price.toString(),
+                                    style: GoogleFonts.montserrat(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize:
+                                        MediaQuery.of(context).size.width / 30),
+                                  ),
+                                ),
+                                SizedBox(width: 1,)
+                              ],
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

@@ -38,14 +38,21 @@ dependencies:
   location: ^2.3.5
   geocoder: ^0.2.1
   geolocator: ^5.3.2+2
+  time_range: ^0.5.0
+  searchable_dropdown: ^1.1.3
   cloud_firestore: 0.14.0+2
   shimmer:
+  hexcolor: ^1.0.4
+  dynamic_theme: ^1.0.0
+  flip_panel: ^1.0.1
   url_launcher:
   firebase_storage: 4.0.0
+  grouped_buttons: ^1.0.4
   progress_dialog: 1.2.4
   google_sign_in:
   flutter_neumorphic:
-  provider:
+  provider: ^3.0.0
+  async: ^2.4.2
   shared_preferences:
   flutter_svg: ^0.18.1
   image_picker:
@@ -56,6 +63,7 @@ dependencies:
   flutter_tindercard: ^0.2.0
   flutter_rating_bar: ^3.2.0+1
   pie_chart:
+  share: ^0.6.3
   calendar_timeline: ^0.7.0
   floating_search_bar: ^0.3.0
 

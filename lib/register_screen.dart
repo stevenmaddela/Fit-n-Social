@@ -34,14 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'name':name,
         'uid':auth.currentUser.uid,
       });
-      rootRef.child("Users").child(auth.currentUser.uid).child("Messages").child("3yw9EZK2cbO2EG1aSszIa5fYpgE3").child("-MGWODl3cuAN32xQ7Lqf").set({
-          'sender': '3yw9EZK2cbO2EG1aSszIa5fYpgE3',
-          'time': DateFormat.jms().format(DateTime.now()),
-          'date': '9/06/20',
-          'unread': true,
-          'text': 'Welcome To Feedy!',
-          'key': '-MGWODl3cuAN32xQ7Lqf',
-      });
 
       showCupertinoDialog(
           context: context,
@@ -303,15 +295,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-
-
         onPressed: (){
           Navigator.pushAndRemoveUntil(
-              context, MaterialPageRoute(builder: (_) => LoggedInScreen()), (
+              context, MaterialPageRoute(builder: (_) => LoginScreen()), (
               Route<dynamic> rr) => false);
-          /*
           setState(() {
-
             saveAttempted = true;
           });
           if(formKey.currentState.validate()){
@@ -320,8 +308,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
           }
         },
-       */},
-
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
