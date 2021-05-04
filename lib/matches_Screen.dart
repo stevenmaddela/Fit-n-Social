@@ -112,7 +112,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         var keys = value1.value.keys;
         for(var key in keys){
           setState(() {
-            members.add(new Member([data[key]['image'],data[key]['image2'],data[key]['image3']], data[key]['uid'], data[key]['name'], data[key]['Profile']['yearInSchool'], data[key]['Profile']['height'], data[key]['Profile']['weight'], data[key]['Profile']['slider1'], data[key]['Profile']['slider2'], data[key]['Profile']['slider3'], getList(data[key]['Profile']['academics']), getList(data[key]['Profile']['goals']), getList(data[key]['Profile']['activities'])));
+            members.add(new Member([data[key]['image'],data[key]['image2'],data[key]['image3']], data[key]['uid'], data[key]['name'], data[key]['yearInSchool'], data[key]['height'], data[key]['weight'], data[key]['slider1'], data[key]['slider2'], data[key]['slider3'], getList(data[key]['academics']), getList(data[key]['goals']), getList(data[key]['activities'])));
           });
         }
       });

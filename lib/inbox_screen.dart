@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fitnsocial/addFriends_screen.dart';
 import 'package:flutter_app_fitnsocial/matches_Screen.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
@@ -51,7 +52,9 @@ class _InboxScreenState extends State<InboxScreen> with SingleTickerProviderStat
           Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.person_add, color: Colors.white,),
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(builder: (context) =>  AddFriends()));
+              },
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
             ),
           ),

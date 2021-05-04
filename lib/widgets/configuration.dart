@@ -11,14 +11,10 @@ List<Map> drawerItems=[
     'icon': Icons.person_outline,
     'title' : 'Profile'
   },
-  {
-    'icon': Icons.settings,
-    'title' : 'Settings'
-  },
-  {
-    'icon': Icons.person_add,
-    'title' : 'Add Friend'
-  },
+  // {
+  //   'icon': Icons.settings,
+  //   'title' : 'Settings'
+  // },
   {
     'icon': Icons.share,
     'title' : 'Share App'

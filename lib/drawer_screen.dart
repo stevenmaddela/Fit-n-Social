@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_app_fitnsocial/widgets/configuration.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app_fitnsocial/profile_screen.dart';
+import 'package:flutter_app_fitnsocial/settings_Screen.dart';
 import 'package:flutter_app_fitnsocial/t&c_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -94,7 +95,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                 }
                                 if(element['title']=='Share App'){
                                   final RenderBox box = context.findRenderObject();
-                                  Share.share("Download Fit'n Social, a healthy living app on Android and IOS",
+                                  Share.share("Download Fit'nSocial, a healthy living app on Android and IOS",
                                       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
                                 }
                                 if(element['title']=='T&C'){
@@ -102,6 +103,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => tcScreen(),
+                                    ),
+                                  );
+                                }
+                                if(element['title']=='Settings'){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => settingsScreen(),
                                     ),
                                   );
                                 }

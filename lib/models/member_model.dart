@@ -14,10 +14,15 @@ class Member{
   List<String> majors;
   List<String> goals;
   List<String> activities;
+  List<String> idealGenders;
+  String yearInSchool;
+  String gender;
 
   Member(this.imageMain, this.id, this.name, this.year, this.height, this.weight, this.experience, this.intensity, this.frequency,
       this.majors, this.goals, this.activities);
-
+  Member.stats(this.idealGenders, this.gender, this.yearInSchool, this.height, this.weight, this.experience, this.intensity, this.frequency, this.majors,this.goals,this.activities);
+  Member.additional(this.imageMain, this.id, this.name, this.year, this.height, this.weight, this.experience, this.intensity, this.frequency,
+      this.majors, this.goals, this.activities, this.gender, this.idealGenders);
   String getMajors(){
     String all = '';
     for(int i = 0; i < majors.length; i++){

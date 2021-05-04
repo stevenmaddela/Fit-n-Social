@@ -186,13 +186,6 @@ class _LoggedInScreenState extends State<LoggedInScreen>
   }
 
   Widget _animatedController() {
-    BorderRadiusGeometry radius = BorderRadius.only(
-      topLeft: Radius.circular(24.0),
-      topRight: Radius.circular(24.0),
-    );
-
-    CardController controller; //Use this to trigger swap.
-
     return AnimatedContainer(
       transform: Matrix4.translationValues(xOffset, yOffset, 0)
         ..scale(scaleFactor),
@@ -282,13 +275,13 @@ class _LoggedInScreenState extends State<LoggedInScreen>
                   ),
                   title: SizedBox.shrink(),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    size: 30,
-                  ),
-                  title: SizedBox.shrink(),
-                ),
+                // BottomNavigationBarItem(
+                //   icon: Icon(
+                //     Icons.shopping_cart,
+                //     size: 30,
+                //   ),
+                //   title: SizedBox.shrink(),
+                // ),
               ],
             ),
           ),

@@ -1,10 +1,20 @@
+import 'dart:io';
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart' as base;
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fitnsocial/models/event_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:time_range/time_range.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
+
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -15,9 +25,10 @@ class _CreateEventState extends State<CreateEvent> {
 
   base.DatabaseReference rootRef = base.FirebaseDatabase.instance.reference();
   FirebaseAuth auth = FirebaseAuth.instance;
-  String title, timeFrom, timeTo, location, image, description;
+  String title, timeFrom, timeTo, location, description;
   List<EventAtendee> atendees = [];
   String date = "--/--/----";
+  var headerImage;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +58,19 @@ class _CreateEventState extends State<CreateEvent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("lib/images/Disinfect_35ct_All-Purpose_Lifestyle-2-768x769.jpg", width: MediaQuery.of(context).size.width, fit: BoxFit.fill, height: MediaQuery.of(context).size.height/4,),
+            Stack(
+              children: [
+                headerImage==null? InkWell(onTap: (){getImage1(context);},child: Container(child:  Center(child: Text("Add Image",style: GoogleFonts.montserrat(color: Colors.pink,fontWeight: FontWeight.w500,fontSize:MediaQuery.of(context).size.width / 10),)),color: Colors.black54,width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4,)) : Image(image: NetworkImage(headerImage), width: MediaQuery.of(context).size.width, fit: BoxFit.fill, height: MediaQuery.of(context).size.height/4,),
+                InkWell(
+                  onTap: (){getImage1(context);},
+                  child: Positioned(
+                    child: Icon(Icons.add_circle, color: Colors.pinkAccent,size: 60,),
+                    bottom: 7,
+                    right: 7,
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.fromLTRB(25,0,25,0),
@@ -288,8 +311,28 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                     ),
                     onTap: (){
-                      uploadData();
-
+                      String check = checkEmptyFields();
+                      if(check == "Full") {
+                        uploadData();
+                      }
+                      else{
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text(
+                                    check),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      }
                     },
                   ),
                 ],
@@ -300,25 +343,96 @@ class _CreateEventState extends State<CreateEvent> {
       ),
     );
   }
+  Future<String> getImage1(context) async {
+    var imag = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if(imag== null){
 
-  void uploadData() {
+    }
+    else {
+      ProgressDialog pr = ProgressDialog(
+          context, type: ProgressDialogType.Normal,
+          isDismissible: false,
+          showLogs: false);
+      await pr.show();
+      await pr.show();
+      String fileName = path.basename(imag.path);
+      StorageReference ref = FirebaseStorage.instance.ref().child(
+          "Event Images").child(FirebaseAuth.instance.currentUser.uid).child("headerImage").child(
+          fileName);
+      StorageUploadTask uploadTask = ref.putFile(imag);
+      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+      var downUrl = await taskSnapshot.ref.getDownloadURL();
+      var url = downUrl.toString();
+      setState(() {
+        headerImage = url;
+      });
+      await pr.hide();
+
+      showCupertinoDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              title: Text(
+                  'Image Uploaded'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+      setState(() {
+
+      });
+    }
+  }
+  Future<void> uploadData() async {
     String push = "";
-    rootRef.child("Users").child(auth.currentUser.uid).child("Profile").once().then((value)  {
+    String name = "";
+    String image = "";
+    await rootRef.child("Users").child(auth.currentUser.uid).once().then((value1){
+      name = value1.value['name'];
+      image = value1.value['image'];
+    });
+    await rootRef.child("Users").child(auth.currentUser.uid).child("Profile").once().then((value)  async {
       push =  rootRef.child(value.value['college']).child("Events").push().key;
       rootRef.child(value.value['college']).child("Events").child(push).set({
+        'college': value.value['college'],
+        'hash': push,
         'title':title,
         'date':date,
         'timeFrom':timeFrom,
         'timeTo':timeTo,
         'location':location,
-        'image':'lib/images/Disinfect_35ct_All-Purpose_Lifestyle-2-768x769.jpg',
+        'image':headerImage,
         'description':description,
       });
-      for(int i = 0; i < 5; i++){
-        rootRef.child(value.value['college']).child("Events").child(push).child("Atendees").push().set({
+        await rootRef.child(value.value['college']).child("Events").child(push).child("Atendees").child(auth.currentUser.uid).set({
+          'name': name,
+          'image': image,
         });
-      }
     });
     Navigator.pop(context);
+  }
+
+  String checkEmptyFields() {
+    // if title, timeFrom, timeTo, location, image, description;
+    // var headerImage;
+    if (title == null)
+      return "Title is Empty";
+    else if (timeFrom == null)
+      return "Select Starting Time";
+    else if (timeTo == null)
+      return "Select Ending Time";
+    else if (location == null)
+      return "Location is Empty";
+    else if (description == null)
+      return "Description is Empty";
+    else if (headerImage == null)
+      return "Header Image is Empty";
+    else return "Full";
   }
 }

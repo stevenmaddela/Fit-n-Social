@@ -1,6 +1,6 @@
 class GraphData implements Comparable<GraphData> {
   String label;
-  int value;
+  double value;
 
   GraphData(this.label, this.value);
 

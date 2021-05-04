@@ -64,10 +64,16 @@ dependencies:
   flutter_rating_bar: ^3.2.0+1
   pie_chart:
   share: ^0.6.3
+  transparent_image: ^0.1.0
   calendar_timeline: ^0.7.0
   floating_search_bar: ^0.3.0
+  flutter_launcher_icons: ^0.8.0
 
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/images/LOGO.png"
 
 
 

@@ -45,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var con1 = ScrollController();
   String token;
 
-  final String serverToken = 'AAAAzXVrQl4:APA91bEFg3TNYBpkPz800BOUqIAa54oYVmufFPij9ehCfZdlaZQ3XCwm-whtSpTA_q96raWu-mOTkyzCkdoH_wqJVsVqWAEVGeXJbisINy5oBVAcnzmJ9AKXyK3rA_u4ISMm3mcJLlk8';
+  final String serverToken = 'AAAAuGXgN6I:APA91bH5-eTH1wXdy-vaGYhMpdRYmJUThabj2OZekn7QTVgxbwXl1QU4RT4UwAywIjj1AooQb7wJAWbW-TOmB5jRe3gYhyQP0Jz8pHrMI_Hpk-vFa9sBAmow89miTlUpcFBgxd1tdYSY';
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
 

@@ -1,4 +1,6 @@
 class Event{
+  final String college;
+  final String hash;
   final String title;
   final String date;
   final String timeFrom;
@@ -8,7 +10,7 @@ class Event{
   final String description;
   final List<EventAtendee> atendees;
 
-  Event(this.title, this.date, this.timeFrom, this.timeTo, this.location,
+  Event(this.college, this.hash, this.title, this.date, this.timeFrom, this.timeTo, this.location,
       this.image, this.description, this.atendees);
 
   @override
@@ -37,9 +39,11 @@ class Event{
 class EventAtendee {
   final String image;
   final String name;
+  final String id;
 
   EventAtendee(
     this.image,
     this.name,
+      this.id,
   );
 }

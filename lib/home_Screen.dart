@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:async/async.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   List<String> weekDays = ["MON", "TUE","WED","THU","FRI","SAT","SUN"];
   List<TableEntry> tableEntries = [];
   String date = "--/--/----";
-  String category, notes, time;
+  String key, category, notes, time;
   String day;
   ScrollController _controller = ScrollController();
   TextEditingController con1 = TextEditingController();
@@ -69,6 +70,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    Map<String, double> test = {'No Activities Yet':1};
+    List<GraphData> emptyGraph = new List();
+    emptyGraph.add(new GraphData("SUN", 0));
+    emptyGraph.add(new GraphData("MON", 0));
+    emptyGraph.add(new GraphData("TUE", 0));
+    emptyGraph.add(new GraphData("WED", 0));
+    emptyGraph.add(new GraphData("THU", 0));
+    emptyGraph.add(new GraphData("FRI", 0));
+    emptyGraph.add(new GraphData("SAT", 0));
+
+
     return Scaffold(
       backgroundColor: Colors.white10,
       body: Stack(
@@ -118,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ],
                               ),
                               SizedBox(height: 10),
-                              Text('△20% vs\nprevious week',
+                              Text(getWeekTime(),
                                 style: GoogleFonts.montserrat(
                                     color: Colors.black38,
                                     fontSize:MediaQuery.of(context).size.width/22.5),
@@ -142,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       :SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                         child: PieChart(
-                    dataMap: dataMap,
+                    dataMap: dataMap.isEmpty? test: dataMap,
                     animationDuration: Duration(milliseconds: 800),
                     chartLegendSpacing: 15,
                     colorList: colorList,
@@ -226,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
                       :CalendarTimeline(
                     initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-                    firstDate: DateTime(2020, 2, 15),
-                    lastDate: DateTime(2021, 11, 20),
+                    firstDate: DateTime(2021, 1, 1),
+                    lastDate: DateTime(2030, 12, 31),
                     onDateSelected: (date) => print(date),
                     leftMargin: 10,
                     monthColor: Colors.white70,
@@ -252,11 +264,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
-                              child: RadialProgress(45, Image.asset("lib/images/thanksgiving_day_challenge_5k.png")),
+                              child: RadialProgress((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100, Image.network("https://kylesethgray.com/content/images/2018/08/20170403_MothersDay_Sticker.png")),
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 13),
-                              child: Text("45%",
+                              child: Text(((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100).round().toString()+"%",
                                 style: GoogleFonts.montserrat(
                                     color: Colors.black38,
                                     fontSize:
@@ -268,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ],
                         ),
                         SizedBox(height: 15,),
-                        Text("Badge Name",
+                        Text("15 Activity Hours",
                           style: GoogleFonts.montserrat(
                             color: Colors.black87,
                             fontSize:
@@ -390,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     );
                     setState(() {
                       date = new DateFormat.yMMMMd("en_US").format(d);
-                      day = new DateFormat('E, MMM d').format(d);
+                      day = new DateFormat('E, MMM d y').format(d);
                     });
                   },
                 ),
@@ -633,10 +645,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.edit_outlined),
+                          icon: Icon(Icons.delete_forever),
                           constraints: BoxConstraints(),
                           iconSize: 25,
                           onPressed: () {
+                            setState(() {
+                              rootRef.child("Users").child(auth.currentUser.uid).child("Diary").child(tableEntries[index].key).remove();
+                              tableEntries.removeAt(index);
+                            });
                           },
                         ),
                       ],
@@ -654,7 +670,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 
   void addEntry(String category, String notes, String time, day) {
-    rootRef.child("Users").child(auth.currentUser.uid).child("Diary").push().set({
+    String hash = rootRef.child("Users").child(auth.currentUser.uid).child("Diary").push().key;
+    rootRef.child("Users").child(auth.currentUser.uid).child("Diary").child(hash).set({
       'category':category,
       'notes':notes,
       'time':time,
@@ -662,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     });
     setState(() {
-      tableEntries.add(new TableEntry(category, notes, time, day));
+      tableEntries.add(new TableEntry(hash, category, notes, time, day));
     });
   }
 
@@ -687,7 +704,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     }
     else
-      weekData.add(new GraphData(day, int.parse(time)));
+      weekData.add(new GraphData(day, double.parse(time)));
   }
 
   bool contains(String element, List<GraphData> weekData) {
@@ -705,9 +722,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         var keys = value.value.keys;
         var data = value.value;
         for (var key in keys) {
-          tableEntries.add(new TableEntry(
+          tableEntries.add(new TableEntry(key,
               data[key]['category'], data[key]['notes'], data[key]['time'],
-              data[key]['day'].toString().substring(0,3).toUpperCase()));
+              data[key]['date'].toString()));
           addData(data[key]['category'], data[key]['date'].toString().substring(0,3).toUpperCase(), data[key]['time']);
         }
         fillData();
@@ -724,10 +741,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   run() {
     return this._memoizer.runOnce(() async {
       await Future.delayed(Duration(milliseconds: 500));
-        _progressController = false;
-        setState(() {
 
-        });
+      setState(() {
+        _progressController = false;
+
+      });
       });
   }
 
@@ -744,7 +762,23 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     }
     weekData.sort((a, b) => weekDays.indexOf(a.label).compareTo(weekDays.indexOf(b.label)));
+    print(weekData.toString());
 
+  }
+
+  String getWeekTime() {
+    int total = 0;
+    for(int i = 0; i < tableEntries.length; i++){
+      var converted = DateFormat('E, MMM d y').parse(tableEntries[i].day);
+      if(calculateDifference(converted)>=-7)
+        total+=int.parse(tableEntries[i].time);
+    }
+    return((total/60).toInt().toString() + ":" + (total%60).toString() + " hours this week");
+  }
+
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inDays;
   }
 
 

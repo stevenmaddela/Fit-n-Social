@@ -25,6 +25,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String name, email, yearInSchool, height, weight, gender, aboutMe,
       whatImLookingFor, college;
+  int academicsCt = 1, goalsCt = 3, activitiesCt = 3;
   bool lgbtq, idealMatchLgbtq;
   final rootRef = FirebaseDatabase.instance.reference();
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -33,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var image1;
   var image2;
   var image3;
-  int donations = 0;
   bool tapped = false;
   final formKey = GlobalKey<FormState>();
   var focus = FocusNode();
@@ -227,26 +227,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .of(context)
                                       .size
                                       .width / 2,
-                                  child: TextFormField(
-                                      onChanged: (textValue) {
-                                        setState(() {
-                                          yearInSchool = textValue.trim();
-                                        });
-                                      },
-                                      initialValue: yearInSchool,
-                                      decoration: new InputDecoration(
-                                        fillColor: Colors.white,
-                                        border: new OutlineInputBorder(
-                                        ),
-                                        //fillColor: Colors.green
-                                      ),
-                                      validator: (val) {
-                                        if (val.length == 0) {
-                                          return "Email cannot be empty";
-                                        } else {
-                                          return null;
-                                        }
-                                      }),
+                                  child: DropdownButton<String>(
+                                    value: yearInSchool,
+                                    icon: Icon(Icons.arrow_downward),
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    style: TextStyle(
+                                        color: Colors.deepPurple
+                                    ),
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.deepPurpleAccent,
+                                    ),
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        yearInSchool = newValue;
+                                      });
+                                    },
+                                    items: <String>['Freshman', 'Sophomore', 'Junior', 'Senior']
+                                        .map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    })
+                                        .toList(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -255,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Academics",
+                                  "Major",
                                   style: GoogleFonts.montserrat(
                                       color: Colors.pink,
                                       fontWeight: FontWeight.w500,
@@ -275,9 +281,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           return GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                academics[index].isSelected
-                                                    ? academics[index].isSelected = false
-                                                    : academics[index].isSelected = true;
+                                                  if(academics[index].isSelected) {
+                                                    academics[index].isSelected = false;
+                                                    academicsCt++;
+                                                  }
+                                                    else if(academicsCt!=0){
+                                                    academics[index]
+                                                        .isSelected = true;
+                                                    academicsCt--;
+                                                  }
                                               });
                                             },
                                             child: Row(
@@ -310,6 +322,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                SizedBox(width: 5,),
                                 Column(
                                   children: [
                                     Text("Height",
@@ -325,26 +338,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     SizedBox(height: 10,),
                                     SizedBox(
                                       width: 75,
-                                      child: TextFormField(
-                                          onChanged: (textValue) {
-                                            setState(() {
-                                              height = textValue.trim();
-                                            });
-                                          },
-                                          initialValue: height,
-                                          decoration: new InputDecoration(
-                                            fillColor: Colors.white,
-                                            border: new OutlineInputBorder(
-                                            ),
-                                            //fillColor: Colors.green
-                                          ),
-                                          validator: (val) {
-                                            if (val.length == 0) {
-                                              return "Email cannot be empty";
-                                            } else {
-                                              return null;
-                                            }
-                                          }),
+                                      child: DropdownButton<String>(
+                                        value: height,
+                                        icon: Icon(Icons.arrow_downward),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: TextStyle(
+                                            color: Colors.deepPurple
+                                        ),
+                                        underline: Container(
+                                          height: 2,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            height = newValue;
+                                          });
+                                        },
+                                        items: <String>['3\'11', '4', '4\'1', '4\'2','4\'3','4\'4','4\'5','4\'6','4\'7','4\'8','4\'9','4\'10','4\'11','5','5\'1','5\'2','5\'3','5\'4','5\'5','5\'6','5\'7','5\'8','5\'9','5\'10','5\'11','5\'12','6\'1','6\'2','6\'3','6\'4','6\'5','6\'6','6\'7','6\'8','6\'9','6\'10','6\'11','7','7\'1','7\'2','7\'3','7\'4','7\'5','7\'6','7\'7','7\'8','7\'9','7\'10','7\'11']
+                                            .map<DropdownMenuItem<String>>((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        })
+                                            .toList(),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -364,26 +383,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     SizedBox(height: 10,),
                                     SizedBox(
                                       width: 75,
-                                      child: TextFormField(
-                                          onChanged: (textValue) {
-                                            setState(() {
-                                              weight = textValue.trim();
-                                            });
-                                          },
-                                          initialValue: weight,
-                                          decoration: new InputDecoration(
-                                            fillColor: Colors.white,
-                                            border: new OutlineInputBorder(
-                                            ),
-                                            //fillColor: Colors.green
-                                          ),
-                                          validator: (val) {
-                                            if (val.length == 0) {
-                                              return "Email cannot be empty";
-                                            } else {
-                                              return null;
-                                            }
-                                          }),
+                                      child: DropdownButton<String>(
+                                        value: weight,
+                                        icon: Icon(Icons.arrow_downward),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: TextStyle(
+                                            color: Colors.deepPurple
+                                        ),
+                                        underline: Container(
+                                          height: 2,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            weight = newValue;
+                                          });
+                                        },
+                                        items: <String>["70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","218","219","220","221","222","223","224","225","226","227","228","229","230","231","232","233","234","235","236","237","238","239","240","241","242","243","244","245","246","247","248","249","250","251","252","253","254","255","256","257","258","259","260","261","262","263","264","265","266","267","268","269","270","271","272","273","274","275","276","277","278","279","280","281","282","283","284","285","286","287","288","289","290","291","292","293","294","295","296","297","298","299","300"]
+
+                                            .map<DropdownMenuItem<String>>((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        })
+                                            .toList(),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -402,31 +428,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     SizedBox(height: 10,),
                                     SizedBox(
-                                      width: 75,
-                                      child: TextFormField(
-                                          onChanged: (textValue) {
-                                            setState(() {
-                                              gender = textValue.trim();
-                                            });
-                                          },
-                                          initialValue: gender,
-                                          decoration: new InputDecoration(
-                                            fillColor: Colors.white,
-                                            border: new OutlineInputBorder(
-                                            ),
-                                            //fillColor: Colors.green
-                                          ),
-                                          validator: (val) {
-                                            if (val.length == 0) {
-                                              return "Email cannot be empty";
-                                            } else {
-                                              return null;
-                                            }
-                                          }),
+                                      width: 95,
+                                      child: DropdownButton<String>(
+                                        value: gender,
+                                        icon: Icon(Icons.arrow_downward),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        style: TextStyle(
+                                            color: Colors.deepPurple
+                                        ),
+                                        underline: Container(
+                                          height: 2,
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            gender = newValue;
+                                          });
+                                        },
+                                        items: <String>['Male', 'Female', 'Non-Binary']
+                                            .map<DropdownMenuItem<String>>((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        })
+                                            .toList(),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(width: 15,),
                                 Column(
                                   children: [
                                     Text("LGBTQ+",
@@ -484,9 +515,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          goals[index].isSelected ?
-                                          goals[index].isSelected = false : goals[index]
-                                              .isSelected = true;
+                                          if(goals[index].isSelected) {
+                                            goals[index].isSelected = false;
+                                            goalsCt++;
+                                          }
+                                          else if(goalsCt!=0){
+                                            goals[index]
+                                                .isSelected = true;
+                                            goalsCt--;
+                                          }
                                         });
                                       },
                                       child: Row(
@@ -539,9 +576,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          activities[index].isSelected
-                                              ? activities[index].isSelected = false
-                                              : activities[index].isSelected = true;
+                                          if(activities[index].isSelected) {
+                                            activities[index].isSelected = false;
+                                            activitiesCt++;
+                                          }
+                                          else if(activitiesCt!=0){
+                                            activities[index]
+                                                .isSelected = true;
+                                            activitiesCt--;
+                                          }
                                         });
                                       },
                                       child: Row(
@@ -678,7 +721,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               overlayRadius: 6.0),
                                         ),
                                         child: Slider(
-                                          value: slider3,
+                                          value: slider3==null?0:slider3,
                                           max: 100,
                                           min: 0,
                                           onChanged: (value) {
@@ -736,8 +779,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 aboutMe = textValue.trim();
                               });
                             },
-                            initialValue: aboutMe,
-
+                            initialValue: aboutMe+"",
                             maxLines: null,
                             decoration: new InputDecoration(
                               fillColor: Colors.white,
@@ -922,7 +964,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       whatImLookingFor = textValue.trim();
                                     });
                                   },
-                                  initialValue: whatImLookingFor,
+                                  initialValue: whatImLookingFor+"",
 
                                   maxLines: null,
                                   decoration: new InputDecoration(
@@ -961,11 +1003,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                     onTap: () {
-                                      uploadData();
-                                      Navigator.pushAndRemoveUntil(
-                                          context, MaterialPageRoute(
-                                          builder: (_) => LoggedInScreen()), (
-                                          Route<dynamic> rr) => false);
+                                      String empty = fieldsNotEmpty();
+                                      if(empty=="Full") {
+                                        uploadData();
+                                        Navigator.pushAndRemoveUntil(
+                                            context, MaterialPageRoute(
+                                            builder: (_) => LoggedInScreen()), (
+                                            Route<dynamic> rr) => false);
+                                      }
+                                      else
+                                        showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return CupertinoAlertDialog(
+                                                title: Text(
+                                                    empty),
+                                                actions: <Widget>[
+                                                  CupertinoDialogAction(
+                                                    child: Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      setState(() {
+
+                                      });
                                     },
                                   ),
                                 ],
@@ -994,6 +1059,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getData();
     super.initState();
   }
+
 
   Future<void> uploadData() async {
     String academicsS = "";
@@ -1049,69 +1115,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     rootRef.child("Users").child(auth.currentUser.uid).child("image2").set(image2);
     rootRef.child("Users").child(auth.currentUser.uid).child("image3").set(image3);
 
-    rootRef.child(college).child("Users").child(auth.currentUser.uid).set({
-      'id':auth.currentUser.uid,
-     'image':image,
-      'image2':image2,
-      'image3':image3,
-      'name':name,
-      'yearInSchool':yearInSchool,
-     'height':height,
-     'weight':weight,
-     'experience':slider1,
-     'intensity':slider2,
-     'frequency':slider3,
-     'academics':academicsS,
-     'goals':goalsS,
-    'activities':activitiesS,
-    });
-    rootRef.child(college).child("Users").once().then((value)  {
-      var keys = value.value.keys;
-      var data = value.value;
-      for (var key in keys) {
-        if (rootRef.child(college).child("Users").child(key).key!=auth.currentUser.uid) {
-          rootRef.child(college).child("Users").child(auth.currentUser.uid)
-              .child("Matches")
-              .child(key)
-              .set({
-            'id': key,
-            'image': data[key]['image'],
-            'image2': data[key]['image2'],
-            'image3': data[key]['image3'],
-            'name': data[key]['name'],
-            'yearInSchool': data[key]['yearInSchool'],
-            'height': data[key]['height'],
-            'weight': data[key]['weight'],
-            'experience': data[key]['experience'],
-            'intensity': data[key]['intensity'],
-            'frequency': data[key]['frequency'],
-            'academics': data[key]['academics'],
-            'goals': data[key]['goals'],
-            'activities': data[key]['activities'],
-          });
-        }
-      }
-    });
-    rootRef.child(college).child("Users").once().then((value)  {
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("uid").set(auth.currentUser.uid);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("image").set(image1);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("image2").set(image2);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("image3").set(image3);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("name").set(name);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("yearInSchool").set(yearInSchool);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("height").set(height);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("weight").set(weight);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("experience").set(slider1);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("intensity").set(slider2);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("frequency").set(slider3);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("academics").set(academicsS);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("goals").set(goalsS);
+    rootRef.child(college).child("Users").child(auth.currentUser.uid).child("activities").set(activitiesS);
+
+    await rootRef.child(college).child("Users").once().then((value)  async {
       var keys = value.value.keys;
       var data = value.value;
       bool yes = false;
       for (var key in keys) {
-        if (rootRef
-            .child(college)
-            .child("Users")
-            .child(key)
-            .key != auth.currentUser.uid) {
-          rootRef.child(college).child("Users").child(key).child("Interested")
-              .child(auth.currentUser.uid).once()
-              .then((value1) {
-            if (value1.value != null) {
+        if (rootRef.child(college).child("Users").child(key).key!=auth.currentUser.uid) {
+          await rootRef.child(college).child("Users").child(key).child("Interested").child(auth.currentUser.uid).once().then((value1) {
+            if(value1.value!=null){
               rootRef.child(college).child("Users").child(key)
                   .child("Interested")
                   .child(auth.currentUser.uid)
                   .set({
-                'id': auth.currentUser.uid,
-                'image': image,
+                'uid': auth.currentUser.uid,
+                'image': image1,
                 'image2': image2,
                 'image3': image3,
                 'name': name,
@@ -1125,22 +1157,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'goals': goalsS,
                 'activities': activitiesS,
               });
-              yes = true;
-              setState(() {
-
-              });
+                yes = true;
             }
           });
-          rootRef.child(college).child("Users").child(key).child("Matched")
+          await rootRef.child(college).child("Users").child(key).child("Matched")
               .child(auth.currentUser.uid).once()
-              .then((value1) {
-            if (value1.value != null) {
+              .then((value2) {
+            if (value2.value != null) {
               rootRef.child(college).child("Users").child(key)
                   .child("Matched")
                   .child(auth.currentUser.uid)
                   .set({
-                'id': auth.currentUser.uid,
-                'image': image,
+                'uid': auth.currentUser.uid,
+                'image': image1,
                 'image2': image2,
                 'image3': image3,
                 'name': name,
@@ -1154,19 +1183,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'goals': goalsS,
                 'activities': activitiesS,
               });
-              yes = true;
-              setState(() {
-
-              });
-            }
+                yes = true;
+              }
           });
-          if(!yes){
+          if(!yes) {
             rootRef.child(college).child("Users").child(key)
                 .child("Matches")
                 .child(auth.currentUser.uid)
                 .set({
-              'id': auth.currentUser.uid,
-              'image': image,
+              'uid': auth.currentUser.uid,
+              'image': image1,
               'image2': image2,
               'image3': image3,
               'name': name,
@@ -1183,18 +1209,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         }
       }
+    });
+    await rootRef.child(college).child("Users").once().then((value) async {
+      var data = value.value;
+      var keys = value.value.keys;
+      bool yes = false;
+      for (var key in keys) {
+        if (rootRef.child(college).child("Users").child(key).key!=auth.currentUser.uid) {
+          await rootRef.child(college).child("Users").child(auth.currentUser.uid).child("Interested").child(key).once().then((value1) {
+            if(value1.value!=null){
+              rootRef.child(college).child("Users").child(auth.currentUser.uid)
+                  .child("Interested")
+                  .child(key)
+                  .set({
+                'uid': key,
+                'image': data[key]['image'],
+                'image2': data[key]['image2'],
+                'image3': data[key]['image3'],
+                'name': data[key]['name'],
+                'yearInSchool': data[key]['yearInSchool'],
+                'height': data[key]['height'],
+                'weight': data[key]['weight'],
+                'experience': data[key]['experience'],
+                'intensity': data[key]['intensity'],
+                'frequency': data[key]['frequency'],
+                'academics': data[key]['academics'],
+                'goals': data[key]['goals'],
+                'activities': data[key]['activities'],
+              });
+                yes = true;
+            }
+          });
+          await rootRef.child(college).child("Users").child(auth.currentUser.uid).child("Matched")
+              .child(key).once()
+              .then((value2) {
+            if (value2.value != null) {
+              rootRef.child(college).child("Users").child(auth.currentUser.uid)
+                  .child("Matched")
+                  .child(key)
+                  .set({
+                'uid': key,
+                'image': data[key]['image'],
+                'image2': data[key]['image2'],
+                'image3': data[key]['image3'],
+                'name': data[key]['name'],
+                'yearInSchool': data[key]['yearInSchool'],
+                'height': data[key]['height'],
+                'weight': data[key]['weight'],
+                'experience': data[key]['experience'],
+                'intensity': data[key]['intensity'],
+                'frequency': data[key]['frequency'],
+                'academics': data[key]['academics'],
+                'goals': data[key]['goals'],
+                'activities': data[key]['activities'],
+              });
+                yes = true;
+            }
+          });
+          if(!yes) {
+            rootRef.child(college).child("Users").child(auth.currentUser.uid)
+                .child("Matches")
+                .child(key)
+                .set({
+              'uid': key,
+              'image': data[key]['image'],
+              'image2': data[key]['image2'],
+              'image3': data[key]['image3'],
+              'name': data[key]['name'],
+              'yearInSchool': data[key]['yearInSchool'],
+              'height': data[key]['height'],
+              'weight': data[key]['weight'],
+              'experience': data[key]['experience'],
+              'intensity': data[key]['intensity'],
+              'frequency': data[key]['frequency'],
+              'academics': data[key]['academics'],
+              'goals': data[key]['goals'],
+              'activities': data[key]['activities'],
+            });
+          }
+        }
+      }
+    });
       setState(() {
 
       });
-    });
     prefs();
   }
 
-  Future<bool> rootFirebaseIsExists(DatabaseReference databaseReference) async{
-    DataSnapshot snapshot = await databaseReference.once();
-
-    return snapshot !=null;
-  }
 
   hexStringToHexInt(String hex) {
     hex = hex.replaceFirst('#', '');
@@ -1232,7 +1333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String i = "#";
     await rootRef.child("Users").child(FirebaseAuth.instance.currentUser.uid).child("Profile").once().then((value) async {
       await rootRef.child("College Colors").child(value.value['college']).once().then((value1) {
-        i+= value1.value;
+        i+= value1.value.toString();
       });
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1249,7 +1350,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     slider1 = 0;
     slider2 = 0;
     getTemplates();
-    FirebaseDatabase.instance.reference().child('Users').child(
+    await FirebaseDatabase.instance.reference().child('Users').child(
           FirebaseAuth.instance.currentUser.uid).once().then((DataSnapshot data) {
         setState(() {
           name = data.value['name'];
@@ -1278,6 +1379,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           college = data.value['Profile']['college'];
         });
       });
+    setState(() {
+
+    });
       rootRef.child("College Colors").once().then((DataSnapshot value){
         Map <dynamic, dynamic> values = value.value;
         values.forEach((key, values){
@@ -1287,6 +1391,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       });
 
+    print(academicsCt);
+    for(int i = 0; i < academics.length; i++){
+      if(academics[i].isSelected){
+        academicsCt--;
+      }
+    }
+    print(academicsCt);
+    for(int i = 0; i < activities.length; i++){
+      if(activities[i].isSelected){
+        activitiesCt--;
+      }
+    }
+    for(int i = 0; i < goals.length; i++){
+      if(goals[i].isSelected){
+        goalsCt--;
+      }
+    }
+    setState(() {
+
+    });
   }
 
   Future<String> getImage1(context) async {
@@ -1460,6 +1584,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
       l.add(academicTypes[i].title);
     }
     return l;
+  }
+
+  String fieldsNotEmpty() {
+    if (name == null)
+      return "Name is Empty";
+    else if (email == null)
+      return "Email is Empty";
+    else if (yearInSchool == null)
+      return "Year in School is Empty";
+    else if (height == null)
+      return "Height is Empty";
+    else if (academics.length < 1)
+      return "Need 1 Academic Field";
+    else if (activities.length < 3)
+      return "Need 3 Activities";
+    else if (goals.length < 3)
+      return "Need 3 Goals";
+    else if (weight == null)
+      return "Weight is Empty";
+    else if (gender == null)
+      return "Gender is Empty";
+    else if (aboutMe == null)
+      return "About Me is Empty";
+    else if (whatImLookingFor == null)
+      return "What I'm looking for is Empty";
+    else if (college == null)
+      return "College is Empty";
+    else if (image1 == null)
+      return "Image 1 is Empty";
+    else if (image2 == null)
+      return "Image 2 is Empty";
+    else if (image3 == null)
+      return "Image 3 is Empty";
+    else return "Full";
   }
 
 }
