@@ -263,7 +263,7 @@ class _LoggedInScreenState extends State<LoggedInScreen>
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.swap_horiz_rounded,
+                    Icons.swap_horiz,
                     size: 30,
                   ),
                   title: SizedBox.shrink(),

@@ -84,7 +84,7 @@ class _EventScreenState extends State<EventScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.share_outlined, color: Colors.black,),
+                          icon: Icon(Icons.share, color: Colors.black,),
                           onPressed: (){},
                         ),
                         Text(
@@ -112,7 +112,7 @@ class _EventScreenState extends State<EventScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
-                            icon: going ? Icon(Icons.check_circle_outline, color: Colors.white,) : Icon(Icons.app_registration, color: Colors.white,),
+                            icon: going ? Icon(Icons.check_circle_outline, color: Colors.white,) : Icon(Icons.person_add, color: Colors.white,),
                             onPressed: (){
                               setState(() {
                                 going = !going;

@@ -872,7 +872,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                       Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.message_outlined),
+                            icon: Icon(Icons.message),
                             iconSize: 30,
                             onPressed: () {
                               Navigator.push(

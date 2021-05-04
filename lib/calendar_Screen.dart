@@ -173,7 +173,7 @@ List<Event> events = [
           },
         ),
         leading: IconButton(
-          icon: Icon(Icons.post_add_rounded),
+          icon: Icon(Icons.add_box),
           color: Colors.black,
           onPressed: (){
             Navigator.push(context, new MaterialPageRoute(builder: (context) => CreateEvent()));
