@@ -222,7 +222,8 @@ List<Event> events = [
               });
             }
           });
-          events.add(new Event(data[key]['college'], data[key]['hash'], data[key]['title'], data[key]['date'], data[key]['timeFrom'], data[key]['timeTo'], data[key]['location'], data[key]['image'], data[key]['description'], l));
+          if(data[key]['approved']!=false)
+            events.add(new Event(data[key]['college'], data[key]['hash'], data[key]['title'], data[key]['date'], data[key]['timeFrom'], data[key]['timeTo'], data[key]['location'], data[key]['image'], data[key]['description'], l));
         }
         setState(() {
           done = true;

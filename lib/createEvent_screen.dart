@@ -400,6 +400,7 @@ class _CreateEventState extends State<CreateEvent> {
     await rootRef.child("Users").child(auth.currentUser.uid).child("Profile").once().then((value)  async {
       push =  rootRef.child(value.value['college']).child("Events").push().key;
       rootRef.child(value.value['college']).child("Events").child(push).set({
+        'approved':false,
         'college': value.value['college'],
         'hash': push,
         'title':title,
