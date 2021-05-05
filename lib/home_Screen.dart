@@ -718,7 +718,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void getData() {
     rootRef.child("Users").child(auth.currentUser.uid).child("Diary").once().then((value)  {
-      if(value!=null) {
+      if(value.value!=null) {
         var keys = value.value.keys;
         var data = value.value;
         for (var key in keys) {
@@ -758,7 +758,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
     for(int i = 0; i < weekDays.length; i++){
       if(!s.contains(weekDays[i])){
-        weekData.add(new GraphData(weekDays[i].substring(0,3).toUpperCase(), 0));
+        weekData.add(new GraphData(weekDays[i].substring(0,3).toUpperCase(), 1));
       }
     }
     weekData.sort((a, b) => weekDays.indexOf(a.label).compareTo(weekDays.indexOf(b.label)));

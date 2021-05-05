@@ -1349,15 +1349,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     idealMatchLgbtq = false;
     slider1 = 0;
     slider2 = 0;
-    getTemplates();
-    await FirebaseDatabase.instance.reference().child('Users').child(
-          FirebaseAuth.instance.currentUser.uid).once().then((DataSnapshot data) {
+    await getTemplates();
+    await FirebaseDatabase.instance.reference().child('Users').child(FirebaseAuth.instance.currentUser.uid).once().then((DataSnapshot data){
+      name = data.value['name'];
+      email = data.value['email'];
+      if(data.value['Profile']!=null){
         setState(() {
-          name = data.value['name'];
           image1 = data.value['image'];
           image2 = data.value['image2'];
           image3 = data.value['image3'];
-          email = data.value['email'];
           yearInSchool = data.value['Profile']['yearInSchool'];
           height = data.value['Profile']['height'];
           weight = data.value['Profile']['weight'];
@@ -1378,7 +1378,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           badges = getList(data.value['Profile']['badges'], getStringList(badges), true);
           college = data.value['Profile']['college'];
         });
-      });
+      }
+    });
     setState(() {
 
     });
@@ -1569,12 +1570,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void getTemplates() async{
     await rootRef.child("Templates").once().then((value) {
-      var data = value.value;
       academics = getList(value.value['academics'], null, false);
       goals = getList(value.value['goals'], null, false);
       activities = getList(value.value['activities'], null, false);
       badges = getList(value.value['badges'], null, false);
       genders = getList(value.value['genders'], null, false);
+    });
+    await rootRef.child("Users").child(FirebaseAuth.instance.currentUser.uid).once().then((DataSnapshot data){
+      setState(() {
+        if(data.value['Profile']==null) {
+          for (int i = 0; i < academics.length; i++)
+            academics[i].setSelected(false);
+          for (int i = 0; i < goals.length; i++)
+            goals[i].setSelected(false);
+          for (int i = 0; i < activities.length; i++)
+            activities[i].setSelected(false);
+          for (int i = 0; i < badges.length; i++)
+            badges[i].setSelected(false);
+          for (int i = 0; i < genders.length; i++)
+            genders[i].setSelected(false);
+        }
+      });
     });
   }
 
