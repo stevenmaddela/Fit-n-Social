@@ -779,7 +779,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 aboutMe = textValue.trim();
                               });
                             },
-                            initialValue: aboutMe+"",
+                            initialValue: aboutMe==null? "":aboutMe+"",
                             maxLines: null,
                             decoration: new InputDecoration(
                               fillColor: Colors.white,
@@ -964,7 +964,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       whatImLookingFor = textValue.trim();
                                     });
                                   },
-                                  initialValue: whatImLookingFor+"",
+                                  initialValue: whatImLookingFor==null? "" :whatImLookingFor+"",
 
                                   maxLines: null,
                                   decoration: new InputDecoration(
