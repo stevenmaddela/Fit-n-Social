@@ -58,18 +58,18 @@ class _CreateEventState extends State<CreateEvent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                headerImage==null? InkWell(onTap: (){getImage1(context);},child: Container(child:  Center(child: Text("Add Image",style: GoogleFonts.montserrat(color: Colors.pink,fontWeight: FontWeight.w500,fontSize:MediaQuery.of(context).size.width / 10),)),color: Colors.black54,width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4,)) : Image(image: NetworkImage(headerImage), width: MediaQuery.of(context).size.width, fit: BoxFit.fill, height: MediaQuery.of(context).size.height/4,),
-                InkWell(
-                  onTap: (){getImage1(context);},
-                  child: Positioned(
+            InkWell(
+              onTap: (){getImage1(context);},
+              child: Stack(
+                children: [
+                  headerImage==null? InkWell(onTap: (){getImage1(context);},child: Container(child:  Center(child: Text("Add Image",style: GoogleFonts.montserrat(color: Colors.pink,fontWeight: FontWeight.w500,fontSize:MediaQuery.of(context).size.width / 10),)),color: Colors.black54,width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4,)) : Image(image: NetworkImage(headerImage), width: MediaQuery.of(context).size.width, fit: BoxFit.fill, height: MediaQuery.of(context).size.height/4,),
+                  Positioned(
                     child: Icon(Icons.add_circle, color: Colors.pinkAccent,size: 60,),
                     bottom: 7,
                     right: 7,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 15,),
             Padding(
@@ -411,10 +411,10 @@ class _CreateEventState extends State<CreateEvent> {
         'image':headerImage,
         'description':description,
       });
-        await rootRef.child(value.value['college']).child("Events").child(push).child("Atendees").child(auth.currentUser.uid).set({
-          'name': name,
-          'image': image,
-        });
+      await rootRef.child(value.value['college']).child("Events").child(push).child("Atendees").child(auth.currentUser.uid).set({
+        'name': name,
+        'image': image,
+      });
     });
     Navigator.pop(context);
   }
