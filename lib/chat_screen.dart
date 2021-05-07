@@ -156,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
-    if(isAdmin){
+    if(!isAdmin){
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

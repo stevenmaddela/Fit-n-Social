@@ -101,13 +101,13 @@ class _DelayedListState extends State<DelayedList>{
 
   @override
   void initState() {
-    awaitData();
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
     _restartTimer = RestartableTimer(Duration(milliseconds: 1),_onTimerFinished);
-    return isLoading | dataChanging ? ShimmerList() : DataList(users);
+    return isLoading | dataChanging ? ShimmerList() :DataList(users);
   }
 
   _onTimerFinished(){
@@ -133,60 +133,63 @@ class _DelayedListState extends State<DelayedList>{
      uids.clear();
      users.clear();
      setState(() {
-
      });
-     var keys = snap.snapshot.value.keys;
-     var data = snap.snapshot.value;
-     for(var key in keys) {
-       uids.add(key);
-     }
-     setState(() {
+     if(snap.snapshot.value.keys!= null) {
+       var keys = snap.snapshot.value.keys;
+       var data = snap.snapshot.value;
+       for (var key in keys) {
+         uids.add(key);
+       }
+       setState(() {
 
-     });
-     for(int i = 0; i < uids.length; i++){
-       usersRef.child("Users").child(FirebaseAuth.instance.currentUser.uid).child("Messages").child(uids[i]).limitToLast(1).once().then((DataSnapshot snap) async {
-         users.clear();
-         var data = snap.value;
-         var keys = snap.value.keys;
-         for(var key in keys) {
-           Message x = new Message(
-               sender: data[key]['sender'],
-               time: data[key]['time'],
-               date: data[key]['date'],
-               unread: data[key]['unread'],
-               text: data[key]['text'],
-               hash: data[key]['key']
-           );
-           await adduser(x, uids[i]);
-         }
        });
-
-     }
+       for (int i = 0; i < uids.length; i++) {
+         await usersRef.child("Users").child(
+             FirebaseAuth.instance.currentUser.uid).child("Messages").child(
+             uids[i]).limitToLast(1).once().then((DataSnapshot snap) async {
+           users.clear();
+           var data = snap.value;
+           var keys = snap.value.keys;
+           for (var key in keys) {
+             Message x = new Message(
+                 sender: data[key]['sender'],
+                 time: data[key]['time'],
+                 date: data[key]['date'],
+                 unread: data[key]['unread'],
+                 text: data[key]['text'],
+                 hash: data[key]['key']
+             );
+             await adduser(x, uids[i]);
+           }
+         });
+       }
        users.sort((a, b) {
-         var timeOne = a.lastMessage.time.substring(0,a.lastMessage.time.indexOf(":")+6);
-         var timetwo= b.lastMessage.time.substring(0,a.lastMessage.time.indexOf(":")+6);
+         var timeOne = a.lastMessage.time.substring(
+             0, a.lastMessage.time.indexOf(":") + 6);
+         var timetwo = b.lastMessage.time.substring(
+             0, a.lastMessage.time.indexOf(":") + 6);
 
          var dateOne = a.lastMessage.date;
-         var datetwo= b.lastMessage.date;
+         var datetwo = b.lastMessage.date;
 
-         if(dateOne==datetwo){
+         if (dateOne == datetwo) {
            return timeOne.compareTo(timetwo);
          }
          else
            return dateOne.compareTo(datetwo);
        });
-     show = true;
-     setState(() {
+       show = true;
+       setState(() {
 
-     });
-
+       });
+     }
    });
 
  }
 
- adduser(Message x, String uid) {
+ adduser(Message x, String uid) async {
    DatabaseReference usersRef = FirebaseDatabase.instance.reference();
-   usersRef.child("Users").child(uid).once().then((value)  {
+   await usersRef.child("Users").child(uid).once().then((value)  {
      var data = value.value;
      if(x.text.indexOf("https://firebasestorage.googleapis.com/v0/b/feedy-a90a8.appspot.com")!=-1) {
        Message u1 = new Message(
@@ -216,10 +219,6 @@ class _DelayedListState extends State<DelayedList>{
      }
    });
  }
-
-  void awaitData(){
-    getData();
-  }
 
 }
 

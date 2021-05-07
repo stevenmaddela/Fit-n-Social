@@ -82,240 +82,240 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 
     return Scaffold(
-      backgroundColor: Colors.white10,
-      body: Stack(
-        children: [
-      Container(
-        height: MediaQuery.of(context).size.height*.8,
-      padding: const EdgeInsets.fromLTRB(20.0,20,20,30),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        backgroundColor: Colors.white10,
+        body: Stack(
           children: [
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              children: [
-                buildCustomGridCard(
-                  title: "Total Activity Time",
-                  color: Color(0xffFF6968),
-                  custom: _progressController
-                      ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
-                      :Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffFF6968),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10,0,10,0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")+1),
-                                    style: GoogleFonts.montserrat(
-                                        color: Colors.white,
-                                        fontSize:MediaQuery.of(context).size.width/12.5),
-                                  ),
-                                  Text(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1),
-                                    style: GoogleFonts.montserrat(
-                                        color: Colors.white70,
-                                        fontSize:MediaQuery.of(context).size.width/20),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Text(getWeekTime(),
-                                style: GoogleFonts.montserrat(
-                                    color: Colors.black38,
-                                    fontSize:MediaQuery.of(context).size.width/22.5),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                 buildCustomGridCard(
-                  title: "Activity",
-                  color: Color(0xff7A54FF),
-                  icon: 'icons/sleep.svg',
-                  dis: '80 - 20\nhealthy',
-                  lable1: '8 h ',
-                  lable2: '42 m',
-                  custom:  _progressController
-                      ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
-                      :SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                        child: PieChart(
-                    dataMap: dataMap.isEmpty? test: dataMap,
-                    animationDuration: Duration(milliseconds: 800),
-                    chartLegendSpacing: 15,
-                    colorList: colorList,
-                    chartRadius: 60,
-                    initialAngleInDegree: 30,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 7.5,
-                    legendOptions: LegendOptions(
-                        showLegendsInRow: false,
-                        legendPosition: LegendPosition.right,
-                        showLegends: true,
-                        legendShape: BoxShape.circle,
-                        legendTextStyle: GoogleFonts.montserrat(
-                            color: Colors.white54,
-                            fontSize:
-                            MediaQuery.of(context).size.width / 35),
-                    ),
-                    chartValuesOptions: ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: false,
-                        showChartValuesInPercentage: false,
-                        showChartValuesOutside: false,
-                    ),
-                  ),
-                      ),
-                ),
-              ],
-            ),
-            SizedBox(height: 15,),
             Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(16),
-
-                    ),
-                    padding: EdgeInsets.all(13),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              height: MediaQuery.of(context).size.height*.8,
+              padding: const EdgeInsets.fromLTRB(20.0,20,20,30),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
                       children: [
-                        Text(
-                          "Daily Activity",
-                          style: GoogleFonts.montserrat(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                              fontSize:16),
-                        ),
-                        SizedBox(height: 15),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          child: _progressController
+                        buildCustomGridCard(
+                          title: "Total Activity Time",
+                          color: Color(0xffFF6968),
+                          custom: _progressController
                               ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
-                              : Graph(
-                              animationController: _graphAnimationController,
-                              values: weekData,
+                              :Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xffFF6968),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(10,0,10,0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")+1),
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontSize:MediaQuery.of(context).size.width/12.5),
+                                          ),
+                                          Text(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1),
+                                            style: GoogleFonts.montserrat(
+                                                color: Colors.white70,
+                                                fontSize:MediaQuery.of(context).size.width/20),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(getWeekTime(),
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black38,
+                                            fontSize:MediaQuery.of(context).size.width/22.5),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 15,),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              children: [
-                buildCustomGridCard(
-                  title: "Goal Days",
-                  color: Color(0xff2AC3FF),
-                  custom:  _progressController
-                      ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
-                      :CalendarTimeline(
-                    initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-                    firstDate: DateTime(2021, 1, 1),
-                    lastDate: DateTime(2030, 12, 31),
-                    onDateSelected: (date) => print(date),
-                    leftMargin: 10,
-                    monthColor: Colors.white70,
-                    dayColor: Colors.black54,
-                    dayNameColor: Color(0xFF333A47),
-                    activeDayColor: Colors.white,
-                    activeBackgroundDayColor: Colors.redAccent[100],
-                    dotsColor: Color(0xFF333A47),
-                  ),
-                ),
-                buildCustomGridCard(
-                  title: "Badges",
-                  color: Color(0xffFF8F61),
-                  custom:  _progressController
-                      ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
-                      :Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: RadialProgress((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100, Image.network("https://kylesethgray.com/content/images/2018/08/20170403_MothersDay_Sticker.png")),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 13),
-                              child: Text(((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100).round().toString()+"%",
-                                style: GoogleFonts.montserrat(
-                                    color: Colors.black38,
+                        buildCustomGridCard(
+                          title: "Activity",
+                          color: Color(0xff7A54FF),
+                          icon: 'icons/sleep.svg',
+                          dis: '80 - 20\nhealthy',
+                          lable1: '8 h ',
+                          lable2: '42 m',
+                          custom:  _progressController
+                              ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
+                              :SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: PieChart(
+                              dataMap: dataMap.isEmpty? test: dataMap,
+                              animationDuration: Duration(milliseconds: 800),
+                              chartLegendSpacing: 15,
+                              colorList: colorList,
+                              chartRadius: 60,
+                              initialAngleInDegree: 30,
+                              chartType: ChartType.ring,
+                              ringStrokeWidth: 7.5,
+                              legendOptions: LegendOptions(
+                                showLegendsInRow: false,
+                                legendPosition: LegendPosition.right,
+                                showLegends: true,
+                                legendShape: BoxShape.circle,
+                                legendTextStyle: GoogleFonts.montserrat(
+                                    color: Colors.white54,
                                     fontSize:
-                                    MediaQuery.of(context).size.width / 17,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    MediaQuery.of(context).size.width / 35),
+                              ),
+                              chartValuesOptions: ChartValuesOptions(
+                                showChartValueBackground: false,
+                                showChartValues: false,
+                                showChartValuesInPercentage: false,
+                                showChartValuesOutside: false,
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 15,),
-                        Text("15 Activity Hours",
-                          style: GoogleFonts.montserrat(
-                            color: Colors.black87,
-                            fontSize:
-                            MediaQuery.of(context).size.width / 30,
                           ),
                         ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 15,),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black54),
+                              borderRadius: BorderRadius.circular(16),
+
+                            ),
+                            padding: EdgeInsets.all(13),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Daily Activity",
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize:16),
+                                ),
+                                SizedBox(height: 15),
+                                Container(
+                                  alignment: Alignment.bottomCenter,
+                                  child: _progressController
+                                      ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
+                                      : weekData.isEmpty? Container(height: MediaQuery.of(context).size.height/7,child: Center(child: Text("Empty, record an activity"),),) : Graph(
+                                    animationController: _graphAnimationController,
+                                    values: weekData,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      children: [
+                        buildCustomGridCard(
+                          title: "Goal Days",
+                          color: Color(0xff2AC3FF),
+                          custom:  _progressController
+                              ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
+                              :CalendarTimeline(
+                            initialDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+                            firstDate: DateTime(2021, 1, 1),
+                            lastDate: DateTime(2030, 12, 31),
+                            onDateSelected: (date) => print(date),
+                            leftMargin: 10,
+                            monthColor: Colors.white70,
+                            dayColor: Colors.black54,
+                            dayNameColor: Color(0xFF333A47),
+                            activeDayColor: Colors.white,
+                            activeBackgroundDayColor: Colors.redAccent[100],
+                            dotsColor: Color(0xFF333A47),
+                          ),
+                        ),
+                        buildCustomGridCard(
+                          title: "Badges",
+                          color: Color(0xffFF8F61),
+                          custom:  _progressController
+                              ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),)
+                              :Container(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: RadialProgress((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100, Image.network("https://kylesethgray.com/content/images/2018/08/20170403_MothersDay_Sticker.png")),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 13),
+                                      child: Text(((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100).round().toString()+"%",
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black38,
+                                            fontSize:
+                                            MediaQuery.of(context).size.width / 17,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 15,),
+                                Text("15 Activity Hours",
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.black87,
+                                    fontSize:
+                                    MediaQuery.of(context).size.width / 30,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            ),
+            SlidingUpPanel(
+              minHeight: MediaQuery.of(context).size.height * 1 / 15,
+              maxHeight: MediaQuery.of(context).size.height * 3 / 4,
+              backdropEnabled: true,
+              panelSnapping: true,
+              defaultPanelState: PanelState.CLOSED,
+              panelBuilder:(s) => ListView.separated(
+                controller: _controller = s,
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index){
+                  return _panel(_controller);
+                },
+                separatorBuilder: (BuildContext context, int index){
+                  return Divider();
+                },
+              ),
             ),
           ],
-        ),
-      ),
-      ),
-          SlidingUpPanel(
-            minHeight: MediaQuery.of(context).size.height * 1 / 15,
-            maxHeight: MediaQuery.of(context).size.height * 3 / 4,
-            backdropEnabled: true,
-            panelSnapping: true,
-            defaultPanelState: PanelState.CLOSED,
-            panelBuilder:(s) => ListView.separated(
-              controller: _controller = s,
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int index){
-                return _panel(_controller);
-              },
-              separatorBuilder: (BuildContext context, int index){
-                return Divider();
-              },
-            ),
-          ),
-    ],
-      )
+        )
     );
   }
 
@@ -477,8 +477,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               child: Column(
                 children: [
                   TextFormField(
-                    controller: con1,
-                      maxLines: null,
+                      controller: con1,
                       decoration: new InputDecoration(
                         fillColor: Colors.white,
                         hintText: "Category:",
@@ -501,8 +500,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       }),
                   SizedBox(height: 15,),
                   TextFormField(
-                    controller: con2,
-                      maxLines: null,
+                      controller: con2,
                       decoration: new InputDecoration(
                         fillColor: Colors.white,
                         hintText: "Notes:",
@@ -669,9 +667,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
 
-  void addEntry(String category, String notes, String time, day) {
+  Future<void> addEntry(String category, String notes, String time, day) async {
     String hash = rootRef.child("Users").child(auth.currentUser.uid).child("Diary").push().key;
-    rootRef.child("Users").child(auth.currentUser.uid).child("Diary").child(hash).set({
+    await rootRef.child("Users").child(auth.currentUser.uid).child("Diary").child(hash).set({
       'category':category,
       'notes':notes,
       'time':time,
@@ -680,6 +678,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
     setState(() {
       tableEntries.add(new TableEntry(hash, category, notes, time, day));
+    });
+    setState(() {
+
     });
   }
 
@@ -718,7 +719,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void getData() {
     rootRef.child("Users").child(auth.currentUser.uid).child("Diary").once().then((value)  {
-      if(value!=null) {
+      if(value.value!=null) {
         var keys = value.value.keys;
         var data = value.value;
         for (var key in keys) {
@@ -746,7 +747,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         _progressController = false;
 
       });
-      });
+    });
   }
 
   void fillData() {
@@ -758,7 +759,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     }
     for(int i = 0; i < weekDays.length; i++){
       if(!s.contains(weekDays[i])){
-        weekData.add(new GraphData(weekDays[i].substring(0,3).toUpperCase(), 0));
+        weekData.add(new GraphData(weekDays[i].substring(0,3).toUpperCase(), 1));
       }
     }
     weekData.sort((a, b) => weekDays.indexOf(a.label).compareTo(weekDays.indexOf(b.label)));
@@ -783,4 +784,3 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 
 }
-

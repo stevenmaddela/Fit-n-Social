@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "791983175586",
+    "firebase_url": "https://fit-nsocial-default-rtdb.firebaseio.com",
     "project_id": "fit-nsocial",
     "storage_bucket": "fit-nsocial.appspot.com"
   },
@@ -37,6 +38,13 @@
             {
               "client_id": "791983175586-l4bekkf0dmkor8giav3ocihmsflbmga2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "791983175586-bd9c3o9k1dimdvol4hjsti8522foos5u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.syfn.flutterAppFitnsocial"
+              }
             }
           ]
         }

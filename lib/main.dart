@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,9 +34,10 @@ import 'package:flutter_app_fitnsocial/inbox_screen.dart' as inbox;
 import 'onBoarding_screen.dart';
 
 void main() async {
-  await WidgetsFlutterBinding.ensureInitialized();
-  // RenderErrorBox.backgroundColor = Colors.transparent;
-  // RenderErrorBox.textStyle = ui.TextStyle(color: Colors.transparent);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  RenderErrorBox.backgroundColor = Colors.transparent;
+  RenderErrorBox.textStyle = ui.TextStyle(color: Colors.transparent);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String i = prefs.getString('color');
   runApp(MyApp(i));
