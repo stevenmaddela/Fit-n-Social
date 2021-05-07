@@ -53,8 +53,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("aboutMe " + aboutMe);
-    print("whatIm " + whatImLookingFor);
+    print('aboutMe: $aboutMe');
+    print('whatIm: $whatImLookingFor');
     return Scaffold(
       backgroundColor: Theme
           .of(context)

@@ -55,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     }).catchError((err) {
       print(err.code);
-      if (err.code == "email-already-in-use") {
+      if (err.code.toString() == "email-already-in-use") {
         showCupertinoDialog(
             context: context,
             builder: (context) {
