@@ -108,7 +108,20 @@ class _SwipeScreenState extends State<SwipeScreen> {
                   ),
                 ],
               )
-            : swipeCt >= 10
+        : users.length > 0 && users.length < 20
+        ? Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width / 1.25,
+        child: Text(
+          "Not enough users check back soon",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.montserrat(
+              color: Colors.pink,
+              fontSize:
+              MediaQuery.of(context).size.width / 10),
+        ),
+      ),
+    ): swipeCt >= 10
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -228,20 +241,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                       ),
                     ],
                   )
-                : users.length > 0 && users.length < 20
-                    ? Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 1.25,
-                          child: Text(
-                            "Not enough users check back soon",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.montserrat(
-                                color: Colors.pink,
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 10),
-                          ),
-                        ),
-                      )
+
                     : Container();
   }
 
