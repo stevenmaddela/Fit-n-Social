@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:async/async.dart';
 import 'package:calendar_timeline/calendar_timeline.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -264,8 +263,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(left: 5),
-                                      child: RadialProgress((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100, Image.network("https://kylesethgray.com/content/images/2018/08/20170403_MothersDay_Sticker.png")),
-                                    ),
+                                      child: RadialProgress((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100.round(), Image.network("https://kylesethgray.com/content/images/2018/08/20170403_MothersDay_Sticker.png"),)),
                                     Padding(
                                       padding: EdgeInsets.only(left: 13),
                                       child: Text(((double.parse(getTotalActivityTime().substring(0,getTotalActivityTime().indexOf("h")))*60 + double.parse(getTotalActivityTime().substring(getTotalActivityTime().indexOf("h")+1,getTotalActivityTime().length-1)))/900*100).round().toString()+"%",

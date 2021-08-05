@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -119,9 +118,6 @@ class _LoggedInScreenState extends State<LoggedInScreen>
   ];
   final DatabaseReference rootRef = FirebaseDatabase.instance.reference();
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  String _homeScreenText = "waiting for token...";
-  String _messageText = "Waiting for Message...";
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
@@ -134,44 +130,7 @@ class _LoggedInScreenState extends State<LoggedInScreen>
       }
     });
     //popup();
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messageomg message $message";
-        });
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messageomg message $message";
-        });
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messageomg message $message";
-        });
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      rootRef
-          .child("Users")
-          .child(auth.currentUser.uid)
-          .child('token')
-          .set(token);
-      setState(() {
-        _homeScreenText = "Push Messaging token: $token";
-      });
-      print(_homeScreenText);
-    });
+
   }
 
 

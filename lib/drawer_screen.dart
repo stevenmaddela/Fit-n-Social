@@ -34,7 +34,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: Color(0x89BCB8B1),
         padding: EdgeInsets.fromLTRB(0, 70, 15, 0),

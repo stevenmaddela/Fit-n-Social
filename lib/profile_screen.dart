@@ -32,6 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final rootRef = FirebaseDatabase.instance.reference();
   final FirebaseAuth auth = FirebaseAuth.instance;
   var image = "https://firebasestorage.googleapis.com/v0/b/feedyyy-bfff8.appspot.com/o/Profile%20Images%2Fprofile_00000_00000.png?alt=media&token=aee78404-64a0-4bb6-a5f2-39b4f9da9d92";
+  var con1 = new TextEditingController();
+  var con2 = new TextEditingController();
 
   var image1;
   var image2;
@@ -53,8 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('aboutMe: $aboutMe');
-    print('whatIm: $whatImLookingFor');
     return Scaffold(
       backgroundColor: Theme
           .of(context)
@@ -294,6 +294,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             .isSelected = true;
                                         academicsCt--;
                                       }
+
+
                                     });
                                   },
                                   child: Row(
@@ -528,6 +530,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       .isSelected = true;
                                   goalsCt--;
                                 }
+
                               });
                             },
                             child: Row(
@@ -778,12 +781,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextFormField(
+                controller: con1,
                   onChanged: (textValue) {
                     setState(() {
                       aboutMe = textValue.trim();
                     });
                   },
-                  initialValue: aboutMe,
                   decoration: new InputDecoration(
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
@@ -962,12 +965,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: TextFormField(
+                      controller: con2,
                         onChanged: (textValue) {
                           setState(() {
                             whatImLookingFor = textValue.trim();
                           });
                         },
-                        initialValue: whatImLookingFor,
                         decoration: new InputDecoration(
                           fillColor: Colors.white,
                           border: new OutlineInputBorder(
@@ -1004,7 +1007,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           onTap: () {
-                            String empty = fieldsNotEmpty();
+                            String empty = fieldsNotEmpty(context) as String;
+                            for(BoxSelection b in activities){
+                              print(b.title);
+                            };
                             if(empty=="Full") {
                               uploadData();
                               Navigator.pushAndRemoveUntil(
@@ -1057,7 +1063,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //         Route<dynamic> rr) => false);
     //   }
     // });
-    getData();
+    awaitData();
     super.initState();
   }
 
@@ -1301,9 +1307,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     });
     setState(() {
-
+      prefs();
     });
-    prefs();
   }
 
 
@@ -1388,12 +1393,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           badges = getList(data.value['Profile']['badges'], getStringList(badges), true);
           college = data.value['Profile']['college'];
         });
+        setState(() {
+          con1.value = TextEditingValue(text: aboutMe);
+          con2.value = TextEditingValue(text: whatImLookingFor);
+        });
       }
     });
-    setState(() {
-
-    });
-    rootRef.child("College Colors").once().then((DataSnapshot value){
+    await rootRef.child("College Colors").once().then((DataSnapshot value){
       Map <dynamic, dynamic> values = value.value;
       values.forEach((key, values){
         setState(() {
@@ -1401,24 +1407,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       });
     });
-
-    print(academicsCt);
     for(int i = 0; i < academics.length; i++){
       if(academics[i].isSelected){
         academicsCt--;
       }
     }
-    print(academicsCt);
     for(int i = 0; i < activities.length; i++){
       if(activities[i].isSelected){
         activitiesCt--;
       }
     }
+
     for(int i = 0; i < goals.length; i++){
       if(goals[i].isSelected){
         goalsCt--;
       }
     }
+
     setState(() {
 
     });
@@ -1612,8 +1617,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return l;
   }
 
-  String fieldsNotEmpty() {
-    if (name == null)
+   String fieldsNotEmpty(BuildContext context)  {
+    String c = getJunk(context);
+    if(c!="Full")
+      return c;
+    else if (name == null)
       return "Name is Empty";
     else if (email == null)
       return "Email is Empty";
@@ -1621,12 +1629,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return "Year in School is Empty";
     else if (height == null)
       return "Height is Empty";
-    else if (academics.length < 1)
-      return "Need 1 Academic Field";
-    else if (activities.length < 3)
-      return "Need 3 Activities";
-    else if (goals.length < 3)
-      return "Need 3 Goals";
     else if (weight == null)
       return "Weight is Empty";
     else if (gender == null)
@@ -1644,6 +1646,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
     else if (image3 == null)
       return "Image 3 is Empty";
     else return "Full";
+  }
+
+  Future<void> awaitData() async {
+    await getData();
+  }
+
+  String getJunk(BuildContext context) {
+      int academicsCT=0, activitiesCT=0, goalsCT=0;
+      for(int i = 0; i < academics.length; i++){
+        if(academics[i].isSelected){
+          academicsCT++;
+        }
+      }
+      for(int i = 0; i < activities.length; i++){
+        if(activities[i].isSelected){
+          activitiesCT++;
+        }
+      }
+
+      for(int i = 0; i < goals.length; i++){
+        if(goals[i].isSelected){
+          goalsCT++;
+        }
+      }
+      setState(() {
+        academicsCt = academicsCT;
+        activitiesCt = activitiesCT;
+        goalsCt = goalsCT;
+      });
+      if(academicsCt<1){
+
+        return "Missing Fields";
+      }
+      else if(activitiesCt<3){
+        return "Missing Fields";
+
+      }
+      else if(goalsCt<3){
+        return "Missing Fields";
+
+      }
+      else return "Full";
+
   }
 
 }

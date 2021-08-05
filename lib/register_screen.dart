@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   ScrollController con = ScrollController();
 
+  String _homeScreenText = "waiting for token...";
+  String _messageText = "Waiting for Message...";
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   void _createUser(String email, String password){
     auth.createUserWithEmailAndPassword(email: email, password: password)
@@ -33,6 +37,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'image':'https://firebasestorage.googleapis.com/v0/b/feedyyy-bfff8.appspot.com/o/Profile%20Images%2Fprofile_00000_00000.png?alt=media&token=aee78404-64a0-4bb6-a5f2-39b4f9da9d92',
         'name':name,
         'uid':auth.currentUser.uid,
+      });
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          setState(() {
+            _messageText = "Push Messageomg message $message";
+          });
+          print("onMessage: $message");
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          setState(() {
+            _messageText = "Push Messageomg message $message";
+          });
+          print("onLaunch: $message");
+        },
+        onResume: (Map<String, dynamic> message) async {
+          setState(() {
+            _messageText = "Push Messageomg message $message";
+          });
+          print("onResume: $message");
+        },
+      );
+      _firebaseMessaging.requestNotificationPermissions(
+          const IosNotificationSettings(sound: true, badge: true, alert: true));
+      _firebaseMessaging.onIosSettingsRegistered
+          .listen((IosNotificationSettings settings) {
+        print("Settings registered: $settings");
+      });
+      _firebaseMessaging.getToken().then((String token) {
+        assert(token != null);
+        rootRef
+            .child("Users")
+            .child(auth.currentUser.uid)
+            .child('token')
+            .set(token);
+        setState(() {
+          _homeScreenText = "Push Messaging token: $token";
+        });
+        print(_homeScreenText);
       });
 
       showCupertinoDialog(

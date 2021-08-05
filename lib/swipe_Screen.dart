@@ -32,6 +32,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
   DatabaseReference rootRef = FirebaseDatabase.instance.reference();
   FirebaseAuth auth = FirebaseAuth.instance;
   bool loading = true;
+  bool testing = false;
 
   @override
   void initState() {
@@ -40,12 +41,13 @@ class _SwipeScreenState extends State<SwipeScreen> {
     index = 0;
     users = [];
     startingLength = users.length;
-    getUsers();
+    setState(() {
+      getUsers();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(users.length);
     BorderRadiusGeometry radius = BorderRadius.only(
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
@@ -57,7 +59,127 @@ class _SwipeScreenState extends State<SwipeScreen> {
               valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
             ),
           ))
-        : users.length >= 20
+        : swipeCt >= 3
+        ? Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 15,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.25,
+          child: Text(
+            "You've reached your swipe limit",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+                color: Colors.pink,
+                fontSize: MediaQuery.of(context).size.width / 10),
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "Come back for more in",
+          style: GoogleFonts.montserrat(
+              color: Colors.black38,
+              fontSize: MediaQuery.of(context).size.width / 30),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Center(
+          child: SizedBox(
+            height: 64.0,
+            child: FlipClock.countdown(
+              duration: Duration(minutes: 1440),
+              digitColor: Colors.white,
+              backgroundColor: Colors.black,
+              digitSize: 48.0,
+              borderRadius:
+              const BorderRadius.all(Radius.circular(3.0)),
+              onDone: () => print('ih'),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 25, right: 25),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: Divider(
+                  thickness: 1,
+                )),
+            SizedBox(
+              width: 15,
+            ),
+            Text("or"),
+            SizedBox(
+              width: 15,
+            ),
+            Expanded(
+                child: Divider(
+                  thickness: 1,
+                )),
+          ]),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width / 1.25,
+          child: Text(
+            "Watch a video \nfor more swipes",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+                color: Colors.pink,
+                fontSize: MediaQuery.of(context).size.width / 15),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        InkWell(
+          onTap: () {},
+          child: Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.pink,
+            child: Text(
+              "Watch Video",
+              style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize:
+                  MediaQuery.of(context).size.width / 25),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        Container(
+          child: Text(
+            "You can also purchase a 2-day \nunlimited swipe pass for just \$4.99",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+                color: Colors.black38,
+                fontSize: MediaQuery.of(context).size.width / 35),
+          ),
+        ),
+        Text(
+          "Learn More",
+          style: GoogleFonts.montserrat(
+              color: Colors.blue[800],
+              decoration: TextDecoration.underline,
+              fontSize: MediaQuery.of(context).size.width / 35),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+      ],
+    )
+    : testing
             ? Stack(
                 children: <Widget>[
                   Column(
@@ -68,9 +190,6 @@ class _SwipeScreenState extends State<SwipeScreen> {
                         initialData: users,
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Member>> snapshot) {
-                          print(
-                              'snapshot.data.length: ${snapshot.data.length}');
-                          print("index " + index.toString());
                           if (snapshot.hasError)
                             return Text('Error: ${snapshot.error}');
                           switch (snapshot.connectionState) {
@@ -79,7 +198,6 @@ class _SwipeScreenState extends State<SwipeScreen> {
                             case ConnectionState.waiting:
                             //return Text('Awaiting images...');
                             case ConnectionState.active:
-                              print("build active");
                               return _AsyncDataExample(context, snapshot.data);
                             case ConnectionState.done:
                               return Text('\$${snapshot.data} (closed)');
@@ -108,8 +226,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
                   ),
                 ],
               )
-        : users.length > 0 && users.length < 20
-        ? Center(
+        : testing==false? Center(
       child: Container(
         width: MediaQuery.of(context).size.width / 1.25,
         child: Text(
@@ -121,128 +238,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
               MediaQuery.of(context).size.width / 10),
         ),
       ),
-    ): swipeCt >= 10
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 15,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.25,
-                        child: Text(
-                          "You've reached your swipe limit",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                              color: Colors.pink,
-                              fontSize: MediaQuery.of(context).size.width / 10),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Come back for more in",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.black38,
-                            fontSize: MediaQuery.of(context).size.width / 30),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Center(
-                        child: SizedBox(
-                          height: 64.0,
-                          child: FlipClock.countdown(
-                            duration: Duration(minutes: 1440),
-                            digitColor: Colors.white,
-                            backgroundColor: Colors.black,
-                            digitSize: 48.0,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(3.0)),
-                            onDone: () => print('ih'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25, right: 25),
-                        child: Row(children: <Widget>[
-                          Expanded(
-                              child: Divider(
-                            thickness: 1,
-                          )),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("or"),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Expanded(
-                              child: Divider(
-                            thickness: 1,
-                          )),
-                        ]),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.25,
-                        child: Text(
-                          "Watch a video \nfor more swipes",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                              color: Colors.pink,
-                              fontSize: MediaQuery.of(context).size.width / 15),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          color: Colors.pink,
-                          child: Text(
-                            "Watch Video",
-                            style: GoogleFonts.montserrat(
-                                color: Colors.white,
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 25),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        child: Text(
-                          "You can also purchase a 2-day \nunlimited swipe pass for just \$4.99",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                              color: Colors.black38,
-                              fontSize: MediaQuery.of(context).size.width / 35),
-                        ),
-                      ),
-                      Text(
-                        "Learn More",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.blue[800],
-                            decoration: TextDecoration.underline,
-                            fontSize: MediaQuery.of(context).size.width / 35),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  )
-
-                    : Container();
+    ): Container(child: Center(child: Text("No more Users"),),);
   }
 
   Widget _AsyncDataExample(BuildContext context, List<Member> imageList) {
@@ -605,14 +601,17 @@ class _SwipeScreenState extends State<SwipeScreen> {
     );
   }
 
-  void getUsers() {
-    rootRef
+  Future<void> getUsers() async {
+    await rootRef.child("Templates").child("testing").once().then((value){
+      testing = value.value;
+    });
+     await rootRef
         .child("Users")
         .child(auth.currentUser.uid)
         .child("Profile")
         .once()
-        .then((value) {
-      var data = value.value;
+        .then((value) async {
+          var data = await value.value;
       me = new Member.stats(
           getList(data['genders']),
           data['gender'],
@@ -621,11 +620,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
           data['weight'],
           data['slider1'],
           data['slider2'],
-          data['slider3'],
+          data['slider3'].toDouble(),
           getList(data['academics']),
           getList(data['goals']),
           getList(data['activities']));
-      rootRef
+       await rootRef
           .child(value.value['college'])
           .child("Users")
           .child(auth.currentUser.uid)
@@ -633,40 +632,40 @@ class _SwipeScreenState extends State<SwipeScreen> {
           .once()
           .then((value1) async {
         if (value1.value != null) {
-          var keys = value1.value.keys;
-          var data = value1.value;
+          var keys = await value1.value.keys;
+          var data = await value1.value;
           for (var key in keys) {
             if (key != auth.currentUser.uid) {
               await rootRef
                   .child("Users")
-                  .child(key)
-                  .child("Profile")
-                  .once()
+                  .child(key).once()
                   .then((value2) async {
                 var data1 = await value2.value;
-                print(data1['gender'] +
-                    " " +
-                    getList(data1['genders']).toString());
-                users.add(new Member.additional(
-                  [
-                    data[key]['image'],
-                    data[key]['image2'],
-                    data[key]['image3']
-                  ],
-                  data[key]['uid'],
-                  data[key]['name'],
-                  data[key]['yearInSchool'],
-                  data[key]['height'],
-                  data[key]['weight'],
-                  data[key]['experience'],
-                  data[key]['intensity'],
-                  data[key]['frequency'],
-                  getList(data[key]['academics']),
-                  getList(data[key]['goals']),
-                  getList(data[key]['activities']),
-                  data1['gender'],
-                  getList(data1['genders']),
-                ));
+                setState(() {
+                  print(data1.toString());
+                  print(data1['image']);
+                  users.add(new Member.additional(
+                    [
+                      data1['image'],
+                      data1['image2'],
+                      data1['image3']
+                    ],
+                    data1['uid'],
+                    data1['name'],
+                    data1['Profile']['yearInSchool'],
+                    data1['Profile']['height'],
+                    data1['Profile']['weight'],
+                    data1['Profile']['slider1'].toDouble(),
+                    data1['Profile']['slider3'].toDouble(),
+                    data1['Profile']['slider2'].toDouble(),
+                    getList(data1['Profile']['academics']),
+                    getList(data1['Profile']['goals']),
+                    getList(data1['Profile']['activities']),
+                    data1['Profile']['gender'],
+                    getList(data1['Profile']['genders']),
+                  ));
+                });
+                print("length during" + users.length.toString());
               });
             }
           }
@@ -954,14 +953,26 @@ class _SwipeScreenState extends State<SwipeScreen> {
     index++;
   }
 
-  left(List<Member> imageList) {
+  left(List<Member> imageList) async {
+    await rootRef
+        .child("Users")
+        .child(auth.currentUser.uid)
+        .child("Profile")
+        .once()
+        .then((value) async {
+      await rootRef
+          .child(value.value['college'])
+          .child("Users")
+          .child(auth.currentUser.uid)
+          .child("Matches").child(imageList[index].id).set(null);
+        });
     imageList.removeAt(0);
     index++;
   }
 
   double getComparisonRating(Member member) {
     double sum = 0;
-    if (member.majors[0] == me.majors[0]) sum += 4;
+    if (member.majors.length>0 && me.majors.length>0 && member.majors[0]== me.majors[0]) sum += 4;
     if (member.year == me.yearInSchool) sum += 4;
     if ((((getInchesHeight(member.height) - getInchesHeight(me.height)).abs()) /
             getInchesHeight(member.height)) <=
@@ -1038,7 +1049,6 @@ class _SwipeScreenState extends State<SwipeScreen> {
 
     ///BODY TYPE?,
     double rating = ((sum / 86) * 100) / 20;
-    print(rating);
     return (rating);
   }
 
